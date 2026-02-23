@@ -1,0 +1,63 @@
+Guilherme: Eu sou um CISO de segurança da informação e preciso de uma lista de possíveis ataque que meu servidor bancário o como posso postergar cada tipo de ataque com varias possibilidades de solução!
+
+Gemini: Olá! Como CISO, você sabe que a superfície de ataque de um servidor bancário é um dos alvos mais críticos e sofisticados do mundo. Não existe "bala de prata", mas sim uma estratégia de Defesa em Profundidade.
+
+Aqui está um mapeamento dos ataques mais prováveis, estruturado para o seu nível de decisão, com foco em resiliência e mitigação:
+
+1. Ransomware e Exfiltração de Dados
+Este é o "pesadelo" atual. O foco não é apenas criptografar, mas vazar dados sensíveis para extorsão dupla.
+
+Como postergar/mitigar:
+
+Immutability: Implementar backups imutáveis (WORM) para garantir que o atacante não apague as cópias de segurança.
+
+Microsegmentação: Isolar o servidor de banco de dados do servidor de aplicação e de gestão, limitando o movimento lateral.
+
+Estratégia Zero Trust: Exigir verificação contínua, mesmo para usuários internos "confiáveis".
+
+2. Ataques de Injeção (SQLi, NoSQLi)
+Apesar de antigos, continuam eficazes se houver falhas na sanitização de dados que entram no núcleo bancário.
+
+Como postergar/mitigar:
+
+Prepared Statements: Uso obrigatório de consultas parametrizadas.
+
+WAF Avançado: Um Web Application Firewall com inspeção profunda e assinaturas atualizadas em tempo real.
+
+Code Review com SAST/DAST: Integrar análises estáticas e dinâmicas de segurança diretamente no pipeline de CI/CD.
+
+3. Distributed Denial of Service (DDoS)
+Ataques volumétricos ou de exaustão de recursos (Layer 7) para tirar o banco do ar e causar dano reputacional.
+
+Como postergar/mitigar:
+
+Anycast Network: Utilizar CDNs e serviços de mitigação de nuvem (como Cloudflare ou Akamai) para absorver o tráfego na borda.
+
+Auto-scaling & Rate Limiting: Configurar limites de requisições por IP/Sessão e escalar recursos automaticamente sob pressão.
+
+4. Business Logic Attacks (Fraude de Lógica)
+O atacante explora como as transações são processadas (ex: transferir valores negativos ou pular etapas de validação).
+
+Como postergar/mitigar:
+
+Idempotência: Garantir que a mesma transação não seja processada duas vezes por erro ou malícia.
+
+Fraud Detection System (FDS): Implementar IA/Machine Learning para detectar comportamentos transacionais anômalos em milissegundos.
+
+5. Comprometimento de API (Broken Object Level Authorization)
+Muitos bancos operam via APIs (Open Banking). Falhas na autorização podem expor dados de outros correntistas.
+
+Como postergar/mitigar:
+
+OAuth2 + OIDC: Implementar protocolos robustos de autorização.
+
+API Gateway: Centralizar a autenticação, monitoramento e controle de quota em um único ponto de entrada.
+
+O Papel do "Human Factor"
+Como CISO, você sabe que o elo mais fraco costuma ser o acesso administrativo.
+
+MFA de Hardware: Para seus DBAs e SysAdmins, utilize chaves físicas (FIDO2) em vez de SMS ou apps.
+
+Privileged Access Management (PAM): Implementar o conceito de "Just-in-Time Access", onde as credenciais administrativas expiram após o uso.
+
+Nota de Segurança: A segurança bancária moderna exige que o servidor não confie nem na própria rede local. O uso de mTLS (Mutual TLS) entre todos os microserviços é altamente recomendável.
