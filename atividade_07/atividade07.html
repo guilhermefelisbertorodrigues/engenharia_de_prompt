@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo da Forca</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 50px; }
+    #palavra { font-size: 30px; letter-spacing: 10px; }
+    #letrasErradas { color: red; }
+    input { padding: 5px; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+<h1>Jogo da Forca</h1>
+
+<p id="palavra"></p>
+
+<p>Tentativas restantes: <span id="tentativas"></span></p>
+
+<p>Letras erradas: <span id="letrasErradas"></span></p>
+
+<input type="text" id="letraInput" maxlength="1" placeholder="Digite uma letra">
+<button onclick="tentar()">Tentar</button>
+
+<p id="mensagem"></p>
+
+<script>
+  const palavras = ["javascript", "programacao", "computador", "algoritmo"];
+  const palavraSecreta = palavras[Math.floor(Math.random() * palavras.length)];
+
+  let letrasCorretas = [];
+  let letrasErradas = [];
+  let tentativas = 6;
+
+  function atualizarTela() {
+    const exibicao = palavraSecreta
+      .split("")
+      .map(letra => (letrasCorretas.includes(letra) ? letra : "_"))
+      .join(" ");
+
+    document.getElementById("palavra").textContent = exibicao;
+    document.getElementById("tentativas").textContent = tentativas;
+    document.getElementById("letrasErradas").textContent = letrasErradas.join(", ");
+
+    if (!exibicao.includes("_")) {
+      document.getElementById("mensagem").textContent = "🎉 Você venceu!";
+    }
+
+    if (tentativas <= 0) {
+      document.getElementById("mensagem").textContent =
+        "💀 Você perdeu! A palavra era: " + palavraSecreta;
+    }
+  }
+
+  function tentar() {
+    const input = document.getElementById("letraInput");
+    const letra = input.value.toLowerCase();
+    input.value = "";
+
+    if (!letra.match(/[a-z]/)) return;
+
+    if (letrasCorretas.includes(letra) || letrasErradas.includes(letra)) {
+      return;
+    }
+
+    if (palavraSecreta.includes(letra)) {
+      letrasCorretas.push(letra);
+    } else {
+      letrasErradas.push(letra);
+      tentativas--;
+    }
+
+    atualizarTela();
+  }
+
+  atualizarTela();
+</script>
+
+</body>
+</html>
